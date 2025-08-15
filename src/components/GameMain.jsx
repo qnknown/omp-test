@@ -59,6 +59,10 @@ const GameMain = () => {
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
     tg?.ready();
+
+    console.log("InitDataUnsafe:", tg?.initDataUnsafe);
+    console.log("User ID:", tg?.initDataUnsafe?.user?.id);
+    
     const telegramUserId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || '123456';
     setUserId(telegramUserId);
     loadUserAttempts(telegramUserId);
