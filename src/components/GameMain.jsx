@@ -5,29 +5,7 @@ import LoseModal from './LoseModal'
 import NoAttemptsScreen from './NoAttemptsScreen'
 import UserInfo from './UserInfo'
 import WinModal from './WinModal'
-import generateCorrectSequence from '../utils/generateCorrectSequence';
-
-// Утиліти
-
-
-
-const createGameBoard = () => {
-  const board = Array(16).fill().map((_, index) => ({
-    id: index,
-    isCorrect: false,
-    isSelected: false,
-    isRevealed: false,
-    position: { row: Math.floor(index / 4), col: index % 4 }
-  }));
-
-  const correctPositions = generateCorrectSequence();
-  correctPositions.forEach(pos => {
-    const index = pos.row * 4 + pos.col;
-    board[index].isCorrect = true;
-  });
-
-  return board;
-};
+import createGameBoard from '../utils/createGameBoard';
 
 const useUserAttempts = (userId) => {
   const [userAttempts, setUserAttempts] = useState({});
@@ -79,6 +57,8 @@ const GameMain = () => {
   const { attemptsLeft, loadUserAttempts, saveUserAttempts } = useUserAttempts(userId);
 
   useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    tg?.ready();
     const telegramUserId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || '123456';
     setUserId(telegramUserId);
     loadUserAttempts(telegramUserId);
