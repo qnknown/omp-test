@@ -17,11 +17,11 @@ const Card = ({ card, onCardClick, gameState, currentAttemptCards, attemptsLeft 
           <div className="text-white text-2xl font-bold"></div>
         ) : showCorrectImage ? (
           <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
-            <div className="text-white text-sm font-bold text-center">✓<br/>МОЄ<br/>ФОТО</div>
+            <div className="text-white text-sm font-bold text-center">ФОТКА</div>
           </div>
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
-            <div className="text-white text-xs font-bold">УПС!</div>
+            <div className="text-white text-xs font-bold">УПС</div>
           </div>
         )}
       </div>
