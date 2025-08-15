@@ -14,19 +14,20 @@ const useUserAttempts = (userId) => {
   const loadUserAttempts = (telegramUserId) => {
     const currentMonth = new Date().toISOString().slice(0, 7);
     const savedAttempts = JSON.parse(localStorage.getItem('userAttempts') || '{}');
-    
+
     if (!savedAttempts[telegramUserId]) {
       savedAttempts[telegramUserId] = {};
     }
-    
-    if (!savedAttempts[telegramUserId][currentMonth]) {
+
+    if (savedAttempts[telegramUserId][currentMonth] === undefined) {
       savedAttempts[telegramUserId][currentMonth] = 3;
+      localStorage.setItem('userAttempts', JSON.stringify(savedAttempts));
     }
-    
+
     setUserAttempts(savedAttempts);
     setAttemptsLeft(savedAttempts[telegramUserId][currentMonth]);
-    localStorage.setItem('userAttempts', JSON.stringify(savedAttempts));
   };
+
 
   const saveUserAttempts = (newAttemptsLeft) => {
     const currentMonth = new Date().toISOString().slice(0, 7);
