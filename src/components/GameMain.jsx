@@ -28,7 +28,6 @@ const useUserAttempts = (userId) => {
     setAttemptsLeft(savedAttempts[telegramUserId][currentMonth]);
   };
 
-
   const saveUserAttempts = (newAttemptsLeft) => {
     const currentMonth = new Date().toISOString().slice(0, 7);
     const updatedAttempts = {
@@ -46,7 +45,6 @@ const useUserAttempts = (userId) => {
   return { attemptsLeft, loadUserAttempts, saveUserAttempts };
 };
 
-// Основний компонент гри
 const GameMain = () => {
   const [gameBoard, setGameBoard] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
@@ -54,6 +52,7 @@ const GameMain = () => {
   const [gameState, setGameState] = useState('playing');
   const [userId, setUserId] = useState(null);
   const [currentAttemptCards, setCurrentAttemptCards] = useState(0);
+  const [attemptNumber, setAttemptNumber] = useState(1);
   
   const { attemptsLeft, loadUserAttempts, saveUserAttempts } = useUserAttempts(userId);
 
@@ -72,6 +71,15 @@ const GameMain = () => {
     setCorrectCards([]);
     setCurrentAttemptCards(0);
     setGameState('playing');
+    setAttemptNumber(1);
+  };
+
+  const makeAllCardsCorrect = () => {
+    const updatedBoard = gameBoard.map(card => ({
+      ...card,
+      isCorrect: true
+    }));
+    setGameBoard(updatedBoard);
   };
 
   const handleCardClick = (cardId) => {
@@ -91,11 +99,40 @@ const GameMain = () => {
     setCurrentAttemptCards(currentAttemptCards + 1);
 
     if (newSelectedCards.length === 3) {
-
       checkAttempt(newSelectedCards);
-
     }
   };
+
+  // const sendWinData = async (userId) => {
+  //   try {
+  //     const now = new Date();
+  //     const day = now.getDate().toString().padStart(2, '0');
+  //     const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  //     const year = now.getFullYear();
+  //     const hours = now.getHours().toString().padStart(2, '0');
+  //     const minutes = now.getMinutes().toString().padStart(2, '0');
+  //     const seconds = now.getSeconds().toString().padStart(2, '0');
+      
+  //     const dateTimeString = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+  //     const id = `${dateTimeString}-${userId}`;
+  //     const value = `${dateTimeString}|${userId}|100|Вгадайка`;
+
+  //     const response = await fetch('https://api.pipe.bot/data/callback?apikey=8f3e548af868603d5219289ad7d0ceb3&var=new_data2log&did=3098', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         id: id,
+  //         value: value
+  //       })
+  //     });
+
+  //     console.log('Win data sent successfully:', { id, value });
+  //   } catch (error) {
+  //     console.error('Error sending win data:', error);
+  //   }
+  // };
 
   const checkAttempt = (selectedCardIds) => {
     const correctCount = selectedCardIds.filter(id => {
@@ -103,9 +140,10 @@ const GameMain = () => {
       return card.isCorrect;
     }).length;
 
-
     if (correctCount === 3) {
       setGameState('won');
+      saveUserAttempts(0);
+      sendWinData(userId);
     } else {
       const newAttemptsLeft = attemptsLeft - 1;
       saveUserAttempts(newAttemptsLeft);
@@ -116,28 +154,41 @@ const GameMain = () => {
         setGameState('attempt_failed');
       }
     }
-
   };
 
+
   const nextAttempt = () => {
+
+    const nextAttemptNum = attemptNumber + 1;
+    setAttemptNumber(nextAttemptNum);
+
+    const winAttempt = Math.random() < 0.5 ? 2 : 3;
+
+    if (nextAttemptNum >= winAttempt) {
+      makeAllCardsCorrect();
+    }
+
     const newBoard = gameBoard.map(card => ({
       ...card,
       isSelected: false,
-      isRevealed: false
+      isRevealed: false,
+
+      isCorrect: nextAttemptNum >= winAttempt ? true : card.isCorrect
     }));
+    
     setGameBoard(newBoard);
     setSelectedCards([]);
     setCurrentAttemptCards(0);
     setGameState('playing');
   };
 
-  const resetGame = () => {
-    if (attemptsLeft > 0) {
-      initializeGame();
-    }
-  };
+  // const resetGame = () => {
+  //   if (attemptsLeft > 0) {
+  //     initializeGame();
+  //   }
+  // };
 
-  // Якщо спроби закінчились
+
   if (attemptsLeft <= 0 && gameState === 'lost') {
     return <NoAttemptsScreen userId={userId} />;
   }
@@ -157,7 +208,6 @@ const GameMain = () => {
 
         <WinModal 
           isVisible={gameState === 'won'}
-          onNewGame={resetGame}
         />
         <LoseModal 
           isVisible={gameState === 'attempt_failed'}

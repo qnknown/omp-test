@@ -1,6 +1,9 @@
-const Card = ({ card, onCardClick, gameState, currentAttemptCards, attemptsLeft }) => { // карточки
+const Card = ({ card, onCardClick, gameState, currentAttemptCards, attemptsLeft }) => {
   const isRevealed = card.isRevealed;
   const showCorrectImage = isRevealed && card.isCorrect;
+  
+  const currentMonth = new Date().getMonth() + 1;
+  const imagePath = `/src/img/${currentMonth}.png`;
 
   return (
     <div
@@ -12,16 +15,40 @@ const Card = ({ card, onCardClick, gameState, currentAttemptCards, attemptsLeft 
       `}
       onClick={() => onCardClick(card.id)}
     >
-      <div className="w-full h-full flex items-center justify-center rounded-lg overflow-hidden">
+      <div className="w-full h-full flex items-center justify-center rounded-lg">
         {!isRevealed ? (
           <div className="text-white text-2xl font-bold"></div>
         ) : showCorrectImage ? (
-          <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
-            <div className="text-white text-sm font-bold text-center">ФОТКА</div>
+          <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center rounded-lg overflow-hidden p-2">
+            <img 
+              src={imagePath}
+              alt="Win"
+              className="w-full h-full object-contain rounded"
+              onError={(e) => {
+                // fallback
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+            <div className="text-white text-sm font-bold text-center hidden">
+              ВІРНО!
+            </div>
           </div>
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
-            <div className="text-white text-xs font-bold">УПС</div>
+          <div className="w-full h-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center rounded-lg overflow-hidden p-2">
+            <img 
+              src="/src/img/oops.png"
+              alt="Oops"
+              className="w-full h-full object-contain rounded"
+              onError={(e) => {
+                // fallback
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+            <div className="text-white text-xs font-bold text-center hidden">
+              УПС!
+            </div>
           </div>
         )}
       </div>
