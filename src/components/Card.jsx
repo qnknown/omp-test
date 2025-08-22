@@ -3,7 +3,7 @@ const Card = ({ card, onCardClick, gameState, currentAttemptCards, attemptsLeft 
   const showCorrectImage = isRevealed && card.isCorrect;
   
   const currentMonth = new Date().getMonth() + 1;
-  const imagePath = `/src/img/${currentMonth}.png`;
+  const imagePath = `/img/${currentMonth}.png`;
 
   return (
     <div
@@ -37,7 +37,7 @@ const Card = ({ card, onCardClick, gameState, currentAttemptCards, attemptsLeft 
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center rounded-lg overflow-hidden p-2">
             <img 
-              src="/src/img/oops.png"
+              src="/img/oops.png"
               alt="Oops"
               className="w-full h-full object-contain rounded"
               onError={(e) => {
