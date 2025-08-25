@@ -101,7 +101,7 @@ const GameMain = () => {
     if (newSelectedCards.length === 3) {
       setTimeout(() => {
         checkAttempt(newSelectedCards);
-      }, 700);
+      }, 1500);
     }
   };
 
