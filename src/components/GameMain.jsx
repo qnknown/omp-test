@@ -99,7 +99,9 @@ const GameMain = () => {
     setCurrentAttemptCards(currentAttemptCards + 1);
 
     if (newSelectedCards.length === 3) {
-      checkAttempt(newSelectedCards);
+      setTimeout(() => {
+        checkAttempt(newSelectedCards);
+      }, 700);
     }
   };
 
@@ -194,8 +196,8 @@ const GameMain = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#1F1F1F] p-4">
-      <div className="max-w-md mx-auto flex flex-col items-center">
+    <div className="h-screen bg-[#1F1F1F] p-4 flex items-center justify-center">
+      <div className="max-w-md w-full flex flex-col items-center">
         <GameHeader attemptsLeft={attemptsLeft} />
         <GameBoard 
           gameBoard={gameBoard}

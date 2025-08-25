@@ -11,7 +11,7 @@ const WinModal = ({ isVisible, onNewGame }) => { // модалка про пер
           <div className="bg-gradient-to-r from-green-400 to-green-500 text-white py-3 px-4 rounded-xl mb-4 font-bold">
             🎁 Ви виграли 100 бонусів!
           </div>
-          <p className="text-gray-600 text-sm mb-6">
+          <p className="text-gray-600 text-sm">
             Приходьте наступного місяця за новими призами!
           </p>
         </div>
