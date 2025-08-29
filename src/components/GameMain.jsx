@@ -105,36 +105,36 @@ const GameMain = () => {
     }
   };
 
-  // const sendWinData = async (userId) => {
-  //   try {
-  //     const now = new Date();
-  //     const day = now.getDate().toString().padStart(2, '0');
-  //     const month = (now.getMonth() + 1).toString().padStart(2, '0');
-  //     const year = now.getFullYear();
-  //     const hours = now.getHours().toString().padStart(2, '0');
-  //     const minutes = now.getMinutes().toString().padStart(2, '0');
-  //     const seconds = now.getSeconds().toString().padStart(2, '0');
+  const sendWinData = async (userId) => {
+    try {
+      const now = new Date();
+      const day = now.getDate().toString().padStart(2, '0');
+      const month = (now.getMonth() + 1).toString().padStart(2, '0');
+      const year = now.getFullYear();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
       
-  //     const dateTimeString = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
-  //     const id = `${dateTimeString}-${userId}`;
-  //     const value = `${dateTimeString}|${userId}|100|Вгадайка`;
+      const dateTimeString = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+      const id = `${dateTimeString}-${userId}`;
+      const value = `${dateTimeString}|${userId}|100|Вгадайка`;
 
-  //     const response = await fetch('https://api.pipe.bot/data/callback?apikey=8f3e548af868603d5219289ad7d0ceb3&var=new_data2log&did=3098', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         id: id,
-  //         value: value
-  //       })
-  //     });
+      const response = await fetch('https://api.pipe.bot/data/callback?apikey=8f3e548af868603d5219289ad7d0ceb3&var=new_data2log&did=3098', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: id,
+          value: value
+        })
+      });
 
-  //     console.log('Win data sent successfully:', { id, value });
-  //   } catch (error) {
-  //     console.error('Error sending win data:', error);
-  //   }
-  // };
+      console.log('Win data sent successfully:', { id, value });
+    } catch (error) {
+      console.error('Error sending win data:', error);
+    }
+  };
 
   const checkAttempt = (selectedCardIds) => {
     const correctCount = selectedCardIds.filter(id => {
